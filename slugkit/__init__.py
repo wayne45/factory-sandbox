@@ -29,3 +29,8 @@ def truncate_slug(slug: str, max_length: int) -> str:
 def char_count(slug: str) -> int:
     """Return the number of characters in slug, excluding hyphens."""
     return len(slug) - slug.count("-")
+
+
+def word_count(slug: str) -> int:
+    """Count hyphen-separated words in a slug, ignoring empty segments."""
+    return sum(1 for part in slug.split("-") if part)

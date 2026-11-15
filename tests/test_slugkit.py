@@ -1,4 +1,4 @@
-from slugkit import char_count, slugify, truncate_slug
+from slugkit import char_count, slugify, truncate_slug, word_count
 
 
 def test_basic():
@@ -57,3 +57,38 @@ def test_char_count_only_hyphens():
 
 def test_char_count_returns_int():
     assert type(char_count("a-b")) is int
+
+
+def test_word_count_basic():
+    assert word_count("") == 0
+    assert word_count("hello") == 1
+    assert word_count("a-b-c-d") == 4
+
+
+def test_word_count_slugify_output():
+    assert word_count(slugify("Hello, World!")) == 2
+    assert word_count(slugify("")) == 0
+    assert word_count(slugify("!!!")) == 0
+
+
+def test_word_count_truncate_slug_output():
+    assert word_count(truncate_slug("hello-big-world", 12)) == 2
+    assert word_count(truncate_slug("hello-big-world", 9)) == 2
+    assert word_count(truncate_slug("supercalifragilistic", 5)) == 1
+    assert word_count(truncate_slug("hello-world", 0)) == 0
+
+
+def test_word_count_composition():
+    for n, expected in [(0, 0), (12, 2), (100, 3)]:
+        assert word_count(truncate_slug(slugify("Hello Big World"), n)) == expected
+
+
+def test_word_count_with_char_count():
+    slug = slugify("Hello Big World")
+    assert char_count(slug) + word_count(slug) - 1 == len(slug)
+
+
+def test_word_count_malformed():
+    assert word_count("-") == 0
+    assert word_count("a--b") == 2
+    assert word_count("-a-") == 1
