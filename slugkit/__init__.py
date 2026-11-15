@@ -36,6 +36,11 @@ def word_count(slug: str) -> int:
     return sum(1 for part in slug.split("-") if part)
 
 
+def shout(slug: str) -> str:
+    """Return slug in upper case."""
+    return slug.upper()
+
+
 def starts_with_digit(slug: str) -> bool:
     """Return True if slug is non-empty and starts with an ASCII digit (0-9)."""
     return bool(slug) and slug[0] in "0123456789"
