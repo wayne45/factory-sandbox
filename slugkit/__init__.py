@@ -1,5 +1,7 @@
 """Tiny sample library used to exercise the AI Software Factory."""
 
+import re
+
 
 def slugify(text: str) -> str:
     """Lowercase text and join alphanumeric words with single hyphens."""
@@ -34,3 +36,11 @@ def char_count(slug: str) -> int:
 def word_count(slug: str) -> int:
     """Count hyphen-separated words in a slug, ignoring empty segments."""
     return sum(1 for part in slug.split("-") if part)
+
+
+_SLUG_RE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
+
+
+def is_slug(text: str) -> bool:
+    """Return True if text is a non-empty slug: [a-z0-9] runs joined by single hyphens."""
+    return isinstance(text, str) and _SLUG_RE.fullmatch(text) is not None
