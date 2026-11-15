@@ -1,4 +1,4 @@
-from slugkit import char_count, slugify, truncate_slug, word_count
+from slugkit import char_count, slugify, starts_with_digit, truncate_slug, word_count
 
 
 def test_basic():
@@ -92,3 +92,37 @@ def test_word_count_malformed():
     assert word_count("-") == 0
     assert word_count("a--b") == 2
     assert word_count("-a-") == 1
+
+
+def test_starts_with_digit_true():
+    assert starts_with_digit("123-abc") is True
+    assert starts_with_digit("9") is True
+
+
+def test_starts_with_digit_false():
+    assert starts_with_digit("abc-123") is False
+
+
+def test_starts_with_digit_empty():
+    assert starts_with_digit("") is False
+
+
+def test_starts_with_digit_leading_hyphen_or_space():
+    assert starts_with_digit("-1") is False
+    assert starts_with_digit(" 1") is False
+
+
+def test_starts_with_digit_all_ascii_digits():
+    for d in "0123456789":
+        assert starts_with_digit(d + "abc") is True
+
+
+def test_starts_with_digit_non_ascii_digit():
+    assert starts_with_digit("²abc") is False
+    assert starts_with_digit("٣abc") is False
+
+
+def test_starts_with_digit_with_helpers():
+    assert starts_with_digit(slugify("2024 Report")) is True
+    assert starts_with_digit(slugify("Report 2024")) is False
+    assert starts_with_digit(truncate_slug("1-two-three", 3)) is True

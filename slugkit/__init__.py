@@ -34,3 +34,8 @@ def char_count(slug: str) -> int:
 def word_count(slug: str) -> int:
     """Count hyphen-separated words in a slug, ignoring empty segments."""
     return sum(1 for part in slug.split("-") if part)
+
+
+def starts_with_digit(slug: str) -> bool:
+    """Return True if slug is non-empty and starts with an ASCII digit (0-9)."""
+    return bool(slug) and slug[0] in "0123456789"
