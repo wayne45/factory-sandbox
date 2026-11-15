@@ -13,3 +13,14 @@ def slugify(text: str) -> str:
     if word:
         out.append("".join(word))
     return "-".join(out)
+
+
+def truncate_slug(slug: str, max_length: int) -> str:
+    """Cut slug to <= max_length, on a hyphen boundary when possible, never ending in '-'."""
+    max_length = max(0, max_length)
+    if len(slug) <= max_length:
+        return slug
+    cut = slug[:max_length]
+    if slug[max_length] != "-" and "-" in cut:
+        cut = cut.rsplit("-", 1)[0]
+    return cut.rstrip("-")
