@@ -1,5 +1,4 @@
 """Tiny sample library used to exercise the AI Software Factory."""
-import os, sys
 
 
 def slugify(text: str) -> str:
