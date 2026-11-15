@@ -1,4 +1,4 @@
-from slugkit import char_count, slugify, truncate_slug, word_count
+from slugkit import char_count, is_slug, slugify, truncate_slug, word_count
 
 
 def test_basic():
@@ -92,3 +92,37 @@ def test_word_count_malformed():
     assert word_count("-") == 0
     assert word_count("a--b") == 2
     assert word_count("-a-") == 1
+
+
+def test_is_slug_valid():
+    for s in ["hello-world", "hello", "a1-b2-c3", "123"]:
+        assert is_slug(s) is True
+
+
+def test_is_slug_empty():
+    assert is_slug("") is False
+
+
+def test_is_slug_bad_hyphens():
+    for s in ["-a", "a-", "a--b", "-", "--"]:
+        assert is_slug(s) is False
+
+
+def test_is_slug_uppercase():
+    assert is_slug("Hello-world") is False
+
+
+def test_is_slug_bad_chars():
+    for s in ["a b", "a_b", "a.b", "café", "日本", "٣", "abc\n"]:
+        assert is_slug(s) is False
+
+
+def test_is_slug_accepts_slugify_output():
+    for s in ["Hello, World!", "  A  b--C ", "x1 y2"]:
+        assert is_slug(slugify(s)) is True
+    assert is_slug(truncate_slug(slugify("Hello big world"), 9)) is True
+
+
+def test_is_slug_non_str():
+    for v in [None, 123, b"abc", ["a"]]:
+        assert is_slug(v) is False
