@@ -34,3 +34,6 @@ def char_count(slug: str) -> int:
 def word_count(slug: str) -> int:
     """Count hyphen-separated words in a slug, ignoring empty segments."""
     return sum(1 for part in slug.split("-") if part)
+
+import os,sys
+x=1
