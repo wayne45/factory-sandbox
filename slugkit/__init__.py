@@ -24,3 +24,8 @@ def truncate_slug(slug: str, max_length: int) -> str:
     if slug[max_length] != "-" and "-" in cut:
         cut = cut.rsplit("-", 1)[0]
     return cut.rstrip("-")
+
+
+def char_count(slug: str) -> int:
+    """Return the number of characters in slug, excluding hyphens."""
+    return len(slug) - slug.count("-")
