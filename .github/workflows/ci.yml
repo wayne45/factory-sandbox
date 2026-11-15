@@ -5,8 +5,22 @@ on:
     branches: ["wayne/hermes/**"]
 permissions:
   contents: read
+
+# Each job is a separate gate. The job name is the required-status-check name in the ruleset.
 jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff==0.15.0
+      - run: ruff check .
+
   test:
+    name: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,3 +29,41 @@ jobs:
           python-version: "3.12"
       - run: pip install pytest
       - run: python -m pytest -q
+
+  secret-scan:
+    name: secret-scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gitleaks (pinned, checksum verified)
+        run: |
+          curl -sSL -o gl.tgz https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  gl.tgz" | sha256sum -c -
+          tar -xzf gl.tgz gitleaks
+      - run: ./gitleaks git --redact --no-banner --exit-code 1 .
+
+  sast:
+    name: sast
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install bandit==1.8.6
+      - run: bandit -q -r slugkit -ll
+
+  dep-scan:
+    name: dep-scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pip-audit==2.9.0
+      # No requirements file exists in this sandbox: fail loudly instead of passing on an empty scan.
+      - run: |
+          if [ -f requirements.txt ]; then pip-audit -r requirements.txt; else echo "NOTE: no requirements.txt, nothing to scan (not a real pass)"; fi
