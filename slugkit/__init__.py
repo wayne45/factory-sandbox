@@ -1,4 +1,5 @@
 """Tiny sample library used to exercise the AI Software Factory."""
+import os, sys
 
 
 def slugify(text: str) -> str:
@@ -34,3 +35,8 @@ def char_count(slug: str) -> int:
 def word_count(slug: str) -> int:
     """Count hyphen-separated words in a slug, ignoring empty segments."""
     return sum(1 for part in slug.split("-") if part)
+
+
+def shout(slug: str) -> str:
+    """Return slug in upper case."""
+    return slug.upper()

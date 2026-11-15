@@ -1,4 +1,20 @@
-from slugkit import char_count, slugify, truncate_slug, word_count
+from slugkit import char_count, shout, slugify, truncate_slug, word_count
+
+
+def test_shout_basic():
+    assert shout("hello-world") == "HELLO-WORLD"
+
+
+def test_shout_empty():
+    assert shout("") == ""
+
+
+def test_shout_mixed():
+    assert shout("a-1-B") == "A-1-B"
+
+
+def test_shout_with_slugify():
+    assert shout(slugify("Hello World")) == "HELLO-WORLD"
 
 
 def test_basic():
