@@ -1,4 +1,12 @@
-from slugkit import char_count, shout, slugify, starts_with_digit, truncate_slug, word_count
+from slugkit import (
+    char_count,
+    ends_with_digit,
+    shout,
+    slugify,
+    starts_with_digit,
+    truncate_slug,
+    word_count,
+)
 
 
 def test_shout_basic():
@@ -142,3 +150,36 @@ def test_starts_with_digit_with_helpers():
     assert starts_with_digit(slugify("2024 Report")) is True
     assert starts_with_digit(slugify("Report 2024")) is False
     assert starts_with_digit(truncate_slug("1-two-three", 3)) is True
+
+
+def test_ends_with_digit_true():
+    assert ends_with_digit("abc-123") is True
+    assert ends_with_digit("9") is True
+
+
+def test_ends_with_digit_false():
+    assert ends_with_digit("123-abc") is False
+
+
+def test_ends_with_digit_empty():
+    assert ends_with_digit("") is False
+
+
+def test_ends_with_digit_trailing_hyphen_or_space():
+    assert ends_with_digit("1-") is False
+    assert ends_with_digit("1 ") is False
+    assert ends_with_digit("1\n") is False
+
+
+def test_ends_with_digit_all_ascii_digits():
+    for d in "0123456789":
+        assert ends_with_digit("abc" + d) is True
+
+
+def test_ends_with_digit_non_ascii_digit():
+    assert ends_with_digit("abc²") is False
+    assert ends_with_digit("abc٣") is False
+
+
+def test_ends_with_digit_with_helpers():
+    assert ends_with_digit(slugify("Report 2024")) is True

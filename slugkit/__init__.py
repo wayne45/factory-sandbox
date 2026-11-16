@@ -44,3 +44,8 @@ def shout(slug: str) -> str:
 def starts_with_digit(slug: str) -> bool:
     """Return True if slug is non-empty and starts with an ASCII digit (0-9)."""
     return bool(slug) and slug[0] in "0123456789"
+
+
+def ends_with_digit(slug: str) -> bool:
+    """Return True if slug is non-empty and ends with an ASCII digit (0-9)."""
+    return bool(slug) and slug[-1] in "0123456789"
