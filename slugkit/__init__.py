@@ -49,3 +49,8 @@ def starts_with_digit(slug: str) -> bool:
 def ends_with_digit(slug: str) -> bool:
     """Return True if slug is non-empty and ends with an ASCII digit (0-9)."""
     return bool(slug) and slug[-1] in "0123456789"
+
+
+def is_all_digits(s: str) -> bool:
+    """Return True if s is non-empty and every character is an ASCII digit (0-9)."""
+    return bool(s) and all(ch in "0123456789" for ch in s)
