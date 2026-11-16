@@ -1,6 +1,7 @@
 from slugkit import (
     char_count,
     ends_with_digit,
+    is_all_digits,
     shout,
     slugify,
     starts_with_digit,
@@ -183,3 +184,33 @@ def test_ends_with_digit_non_ascii_digit():
 
 def test_ends_with_digit_with_helpers():
     assert ends_with_digit(slugify("Report 2024")) is True
+
+
+def test_is_all_digits_true():
+    assert is_all_digits("123") is True
+    assert is_all_digits("0") is True
+
+
+def test_is_all_digits_empty():
+    assert is_all_digits("") is False
+
+
+def test_is_all_digits_non_digit():
+    for s in ["12a", "a12", "1-2", "1 2", " 1", "1\n", "abc"]:
+        assert is_all_digits(s) is False
+
+
+def test_is_all_digits_non_ascii():
+    for s in ["²", "٣", "12٣"]:
+        assert is_all_digits(s) is False
+
+
+def test_is_all_digits_each_digit():
+    for d in "0123456789":
+        assert is_all_digits(d) is True
+    assert is_all_digits("0123456789") is True
+
+
+def test_is_all_digits_with_helpers():
+    assert is_all_digits(slugify("2024")) is True
+    assert is_all_digits(slugify("Report 2024")) is False
