@@ -1,5 +1,6 @@
 from slugkit import (
     char_count,
+    count_vowels,
     ends_with_digit,
     has_whitespace,
     is_all_digits,
@@ -234,3 +235,36 @@ def test_has_whitespace_empty():
 def test_has_whitespace_unicode():
     for s in ["\u00a0", "a\u3000b"]:
         assert has_whitespace(s) is True
+
+
+def test_count_vowels_basic_and_case():
+    assert count_vowels("hello") == 2
+    assert count_vowels("AEIOU") == 5
+    assert count_vowels("AbEcIdOfU") == 5
+
+
+def test_count_vowels_repeated():
+    assert count_vowels("banana") == 3
+    assert count_vowels("aaa") == 3
+
+
+def test_count_vowels_none():
+    for s in ("rhythm", "xyz", "bcd"):
+        assert count_vowels(s) == 0
+
+
+def test_count_vowels_empty():
+    assert count_vowels("") == 0
+
+
+def test_count_vowels_ignores_non_letters():
+    assert count_vowels("a1 e-i_o!u") == 5
+
+
+def test_count_vowels_non_ascii_and_y():
+    assert count_vowels("éüyY") == 0
+
+
+def test_count_vowels_returns_int():
+    assert type(count_vowels("hello")) is int
+    assert type(count_vowels("")) is int

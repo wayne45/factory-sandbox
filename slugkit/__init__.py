@@ -59,3 +59,8 @@ def is_all_digits(s: str) -> bool:
 def has_whitespace(s: str) -> bool:
     """Return True if s contains at least one whitespace character (str.isspace)."""
     return any(ch.isspace() for ch in s)
+
+
+def count_vowels(s: str) -> int:
+    """Return the number of vowels (a, e, i, o, u, case-insensitive) in s."""
+    return sum(1 for ch in s if ch in "aeiouAEIOU")
