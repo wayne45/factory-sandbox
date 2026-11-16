@@ -1,6 +1,7 @@
 from slugkit import (
     char_count,
     ends_with_digit,
+    has_whitespace,
     is_all_digits,
     shout,
     slugify,
@@ -214,3 +215,22 @@ def test_is_all_digits_each_digit():
 def test_is_all_digits_with_helpers():
     assert is_all_digits(slugify("2024")) is True
     assert is_all_digits(slugify("Report 2024")) is False
+
+
+def test_has_whitespace_true():
+    for s in ["a b", "a\tb", "a\n", "a\rb", "a\x0bb", "a\x0cb", " ", " a", "a "]:
+        assert has_whitespace(s) is True
+
+
+def test_has_whitespace_false():
+    for s in ["abc", "a-b_c", "123"]:
+        assert has_whitespace(s) is False
+
+
+def test_has_whitespace_empty():
+    assert has_whitespace("") is False
+
+
+def test_has_whitespace_unicode():
+    for s in ["\u00a0", "a\u3000b"]:
+        assert has_whitespace(s) is True
