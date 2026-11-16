@@ -2,6 +2,7 @@ from slugkit import (
     char_count,
     count_vowels,
     ends_with_digit,
+    first_word,
     has_whitespace,
     is_all_digits,
     shout,
@@ -268,3 +269,31 @@ def test_count_vowels_non_ascii_and_y():
 def test_count_vowels_returns_int():
     assert type(count_vowels("hello")) is int
     assert type(count_vowels("")) is int
+
+
+def test_first_word_basic():
+    assert first_word("hello world") == "hello"
+    assert first_word("hello") == "hello"
+
+
+def test_first_word_leading_whitespace():
+    assert first_word("  hello world") == "hello"
+
+
+def test_first_word_empty_and_whitespace_only():
+    for s in ["", " ", "   ", "\t\n"]:
+        assert first_word(s) == ""
+
+
+def test_first_word_any_whitespace():
+    for s in ["a\tb", "a\nb", "a\u00a0b", "a\u3000b"]:
+        assert first_word(s) == "a"
+
+
+def test_first_word_preserves_case_punctuation():
+    assert first_word("Hello, World") == "Hello,"
+
+
+def test_first_word_returns_str():
+    for s in ["word", "", "   "]:
+        assert type(first_word(s)) is str

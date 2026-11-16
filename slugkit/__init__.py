@@ -64,3 +64,9 @@ def has_whitespace(s: str) -> bool:
 def count_vowels(s: str) -> int:
     """Return the number of vowels (a, e, i, o, u, case-insensitive) in s."""
     return sum(1 for ch in s if ch in "aeiouAEIOU")
+
+
+def first_word(s: str) -> str:
+    """Return the first whitespace-separated word of s, or "" if there is none."""
+    parts = s.split(None, 1)
+    return parts[0] if parts else ""
