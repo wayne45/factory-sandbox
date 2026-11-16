@@ -54,3 +54,8 @@ def ends_with_digit(slug: str) -> bool:
 def is_all_digits(s: str) -> bool:
     """Return True if s is non-empty and every character is an ASCII digit (0-9)."""
     return bool(s) and all(ch in "0123456789" for ch in s)
+
+
+def has_whitespace(s: str) -> bool:
+    """Return True if s contains at least one whitespace character (str.isspace)."""
+    return any(ch.isspace() for ch in s)
